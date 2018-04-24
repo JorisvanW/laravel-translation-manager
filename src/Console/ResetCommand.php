@@ -33,7 +33,7 @@ class ResetCommand extends Command {
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         $this->manager->truncateTranslations();
         $this->info("All translations are deleted");

@@ -34,7 +34,7 @@ class ExportCommand extends Command {
      *
      * @return void
      */
-    public function fire()
+    public function handle()
     {
         $group = $this->argument('group');
 
