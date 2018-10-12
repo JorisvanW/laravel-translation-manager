@@ -39,8 +39,6 @@
             display: block;
             position: fixed;
             background: #fff;
-
-
         }
 
         <?php if (array_get($config, 'menu_position') === 'bottom') {
@@ -48,6 +46,10 @@
         } ?>
 
         .trans-actions.top-flow form {
+            display: inline;
+        }
+
+        .trans-actions.top-flow button[type="submit"] {
             float: right;
         }
 
