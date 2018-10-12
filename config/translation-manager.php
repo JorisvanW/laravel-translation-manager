@@ -76,4 +76,11 @@ return array(
      */
     'menu_position' => 'top',
 
+    /**
+     * Support Grammarly (maks
+     *
+     * @type bool
+     */
+    'support_grammarly' => false,
+
 );
