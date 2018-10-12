@@ -60,11 +60,13 @@
             border-color: #f00;
         }
 
+        <?php if (array_get($config, 'support_grammarly', false)) { ?>
         @media (min-width: 768px) {
             .form-inline .form-control {
-                width: 302px;
+                min-width: 302px;
             }
         }
+        <?php } ?>
     </style>
     <script>
         jQuery(document).ready(function($){
