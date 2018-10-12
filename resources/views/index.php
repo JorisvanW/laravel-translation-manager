@@ -59,6 +59,12 @@
         table tr td  + table tr:hover td {
             border-color: #f00;
         }
+
+        @media (min-width: 768px) {
+            .form-inline .form-control {
+                width: 302px;
+            }
+        }
     </style>
     <script>
         jQuery(document).ready(function($){
