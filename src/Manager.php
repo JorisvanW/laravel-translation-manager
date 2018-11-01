@@ -159,6 +159,8 @@ class Manager{
                 }
             }
             Translation::ofTranslatedGroup($group)->update(array('status' => Translation::STATUS_SAVED));
+
+            $this->events->dispatch(new Events\Published($group));
         }
     }
 
