@@ -33,7 +33,12 @@ class Translation extends Model
 
     public function scopeOfTranslatedGroup($query, $group)
     {
-        return $query->where('group', $group)->whereNotNull('value');
+        return $query->where('group', '=', $group)->whereNotNull('value');
+    }
+
+    public function scopeLocale($query, $locale)
+    {
+        return $query->where('locale', '=', $locale);
     }
 
     public function scopeOrderByGroupKeys($query, $ordered)

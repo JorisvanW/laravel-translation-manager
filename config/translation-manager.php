@@ -1,6 +1,6 @@
 <?php
 
-return array(
+return [
 
     /*
     |--------------------------------------------------------------------------
@@ -10,38 +10,38 @@ return array(
     | The default group settings for the elFinder routes.
     |
     */
-    'route'          => array(
+    'route'             => [
         'prefix'     => 'translations',
         'middleware' => 'auth',
-    ),
+    ],
 
     /**
      * Enable deletion of translations
      *
      * @type boolean
      */
-    'delete_enabled' => true,
+    'delete_enabled'    => true,
 
     /**
      * Enable creating of translations
      *
      * @type boolean
      */
-    'creating_enabled' => true,
+    'creating_enabled'  => true,
 
     /**
      * Enable import of translations
      *
      * @type boolean
      */
-    'import_enabled' => true,
+    'import_enabled'    => true,
 
     /**
      * Enable find of translations
      *
      * @type boolean
      */
-    'find_enabled' => true,
+    'find_enabled'      => true,
 
     /**
      * Exclude specific groups from Laravel Translation Manager.
@@ -55,26 +55,26 @@ return array(
      *        'validation',
      *    )
      */
-    'exclude_groups' => array(),
+    'exclude_groups'    => [],
 
     /**
      * Export translations with keys output alphabetically.
      */
-    'sort_keys '     => false,
+    'sort_keys '        => false,
 
     /**
      * The database connection to use.
      *
      * @type string|null
      */
-    'db_connection'  => null,
+    'db_connection'     => null,
 
     /**
      * Set the position of the menu in a translations group
      *
      * @type string    top|bottom
      */
-    'menu_position' => 'top',
+    'menu_position'     => 'top',
 
     /**
      * Support Grammarly (maks
@@ -83,4 +83,16 @@ return array(
      */
     'support_grammarly' => false,
 
-);
+    /**
+     * Enable services of translations
+     *
+     * @type array
+     */
+    'services'          => [
+        'deepl' => [
+            'enabled'       => false,
+            'default_locale' => null, // The local to be preselected to use as base translation
+        ],
+    ],
+
+];

@@ -135,6 +135,12 @@ This will extend the Translator and will create a new database entry, whenever a
 This way it shows up in the webinterface and can be edited and later exported.
 You shouldn't use this in production, just in production to translate your views, then just switch back.
 
+### Services
+
+#### [DeepL](https://www.deepl.com)
+
+You can use [DeepL Laravel](https://github.com/JorisvanW/deepl-laravel) to have the package (automatic) translate strings.
+     
 ## TODO
 
 This package is still very alpha. Few thinks that are on the todo-list:
