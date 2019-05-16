@@ -20,7 +20,7 @@ class ServiceController extends BaseController
     {
         $services = $this->manager->getConfig('services');
 
-        if (!in_array($group, $this->manager->getConfig('exclude_groups'))) {
+        if (!in_array($group, (is_callable($configVal = $this->manager->getConfig('exclude_groups')) ? $configVal() : $configVal))) {
             $keys         = explode('|', request()->get('keys'));
             $localeBase   = request()->get('locale_base');
             $localeTarget = request()->get('locale_target');

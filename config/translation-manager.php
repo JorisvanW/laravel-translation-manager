@@ -18,28 +18,28 @@ return [
     /**
      * Enable deletion of translations
      *
-     * @type boolean
+     * @type boolean|callable
      */
     'delete_enabled'    => true,
 
     /**
      * Enable creating of translations
      *
-     * @type boolean
+     * @type boolean|callable
      */
     'creating_enabled'  => true,
 
     /**
      * Enable import of translations
      *
-     * @type boolean
+     * @type boolean|callable
      */
     'import_enabled'    => true,
 
     /**
      * Enable find of translations
      *
-     * @type boolean
+     * @type boolean|callable
      */
     'find_enabled'      => true,
 
@@ -47,7 +47,7 @@ return [
      * Exclude specific groups from Laravel Translation Manager.
      * This is useful if, for example, you want to avoid editing the official Laravel language files.
      *
-     * @type array
+     * @type array|callable
      *
      *    array(
      *        'pagination',

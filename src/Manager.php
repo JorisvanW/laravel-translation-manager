@@ -28,7 +28,7 @@ class Manager{
 
     public function missingKey($namespace, $group, $key)
     {
-        if(!in_array($group, $this->config['exclude_groups']) && $this->getConfig('creating_enabled')) {
+        if(!in_array($group, (is_callable($configVal = $this->config['exclude_groups']) ? $configVal() : $configVal)) && (is_callable($configVal = $this->getConfig('creating_enabled')) ? $configVal() : $configVal)) {
             Translation::firstOrCreate(array(
                 'locale' => $this->app['config']['app.locale'],
                 'group' => $group,
@@ -39,7 +39,7 @@ class Manager{
 
     public function importTranslations($replace = false)
     {
-        if ($this->getConfig('import_enabled')) {
+        if (is_callable($configVal = $this->getConfig('import_enabled')) ? $configVal() : $configVal) {
             $counter = 0;
             foreach ($this->files->directories($this->app['path.lang']) as $langPath) {
                 $locale = basename($langPath);
@@ -49,7 +49,7 @@ class Manager{
                     $info  = pathinfo($file);
                     $group = $info['filename'];
 
-                    if (in_array($group, $this->config['exclude_groups'])) {
+                    if (in_array($group, (is_callable($configVal = $this->config['exclude_groups']) ? $configVal() : $configVal))) {
                         continue;
                     }
 
@@ -97,7 +97,7 @@ class Manager{
 
     public function findTranslations($path = null)
     {
-        if ($this->getConfig('find_enabled')) {
+        if (is_callable($configVal = $this->getConfig('find_enabled')) ? $configVal() : $configVal) {
             $path      = $path ?: base_path();
             $keys      = [];
             $functions = ['trans', 'trans_choice', 'Lang::get', 'Lang::choice', 'Lang::trans', 'Lang::transChoice', '@lang', '@choice', '__'];
@@ -144,7 +144,7 @@ class Manager{
 
     public function exportTranslations($group)
     {
-        if(!in_array($group, $this->config['exclude_groups'])) {
+        if(!in_array($group, is_callable($configVal = $this->config['exclude_groups']) ? $configVal() : $configVal)) {
             if($group == '*')
                 return $this->exportAllTranslations();
 

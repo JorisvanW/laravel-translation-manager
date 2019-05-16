@@ -16,7 +16,7 @@
         a.status-1 {
             font-weight: bold;
         }
-        
+
         .form-inline {
             display: inline;
         }
@@ -170,14 +170,14 @@
                 }
             });
 
-            <?php if(array_get($config, 'import_enabled', true)): ?>
+            <?php if(is_callable($configVal = array_get($config, 'import_enabled', true)) ? $configVal() : $configVal): ?>
             $('.form-import').on('ajax:success', function (e, data) {
                 $('div.success-import strong.counter').text(data.counter);
                 $('div.success-import').slideDown();
             });
             <?php endif; ?>
 
-            <?php if(array_get($config, 'find_enabled', true)): ?>
+            <?php if(is_callable($configVal = array_get($config, 'find_enabled', true)) ? $configVal() : $configVal): ?>
             $('.form-find').on('ajax:success', function (e, data) {
                 $('div.success-find strong.counter').text(data.counter);
                 $('div.success-find').slideDown();
@@ -248,7 +248,7 @@
         </div>
     <?php endif; ?>
     <p>
-        <?php if (!isset($group) && array_get($config, 'import_enabled', true)) : ?>
+        <?php if (!isset($group) && (is_callable($configVal = array_get($config, 'import_enabled', true)) ? $configVal() : $configVal)) : ?>
     <form class="form-inline form-import" method="POST" action="<?= action('\Barryvdh\TranslationManager\Controller@postImport') ?>" data-remote="true" role="form">
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
         <select name="replace" class="form-control">
@@ -257,7 +257,7 @@
         </select>
         <button type="submit" class="btn btn-success" data-disable-with="Loading..">Import groups</button>
     </form>
-<?php if (array_get($config, 'find_enabled', true)): ?>
+<?php if (is_callable($configVal = array_get($config, 'find_enabled', true)) ? $configVal() : $configVal): ?>
     <form class="form-inline form-find" method="POST" action="<?= action('\Barryvdh\TranslationManager\Controller@postFind') ?>" data-remote="true" role="form" data-confirm="Are you sure you want to scan you app folder? All found translation keys will be added to the database.">
         <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
         <p></p>
@@ -288,7 +288,7 @@
         </div>
     </form>
     <?php if ($group): ?>
-        <?php if (array_get($config, 'creating_enabled', true)): ?>
+        <?php if (is_callable($configVal = array_get($config, 'creating_enabled', true)) ? $configVal() : $configVal): ?>
             <form action="<?= action('\Barryvdh\TranslationManager\Controller@postAdd', [$group]) ?>" method="POST" role="form" id="new-translation">
                 <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
                 <textarea class="form-control" rows="3" name="keys" placeholder="Add 1 key per line, without the group prefix"></textarea>
