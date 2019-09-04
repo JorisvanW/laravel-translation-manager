@@ -86,6 +86,9 @@ class ManagerServiceProvider extends ServiceProvider {
             $router->post('/import', 'Controller@postImport');
             $router->post('/find', 'Controller@postFind');
             $router->post('/publish/{group}', 'Controller@postPublish')->where('group', '.*');
+
+            $router->post('/service/usage', 'ServiceController@postUsage');
+            $router->post('/service/{group}/bulk', 'ServiceController@postBulk')->where('group', '.*');
         });
 	}
 

@@ -19,7 +19,7 @@ class Controller extends BaseController
     {
         $locales = $this->loadLocales();
         $groups = Translation::groupBy('group');
-        $excludedGroups = $this->manager->getConfig('exclude_groups');
+        $excludedGroups = (is_callable($configVal = $this->manager->getConfig('exclude_groups')) ? $configVal() : $configVal);
         if($excludedGroups){
             $groups->whereNotIn('group', $excludedGroups);
         }
@@ -48,7 +48,7 @@ class Controller extends BaseController
             ->with('numTranslations', $numTranslations)
             ->with('config', $this->manager->getConfig())
             ->with('editUrl', action('\Barryvdh\TranslationManager\Controller@postEdit', [$group]))
-            ->with('deleteEnabled', $this->manager->getConfig('delete_enabled'));
+            ->with('deleteEnabled', (is_callable($configVal = $this->manager->getConfig('delete_enabled')) ? $configVal() : $configVal));
     }
 
     public function getView($group = null)
@@ -86,7 +86,7 @@ class Controller extends BaseController
 
     public function postEdit($group = null)
     {
-        if(!in_array($group, $this->manager->getConfig('exclude_groups'))) {
+        if(!in_array($group, (is_callable($configVal = $this->manager->getConfig('exclude_groups')) ? $configVal() : $configVal))) {
             $name = request()->get('name');
             $value = request()->get('value');
 
@@ -105,7 +105,7 @@ class Controller extends BaseController
 
     public function postDelete($group = null, $key)
     {
-        if(!in_array($group, $this->manager->getConfig('exclude_groups')) && $this->manager->getConfig('delete_enabled')) {
+        if(!in_array($group, (is_callable($configVal = $this->manager->getConfig('exclude_groups')) ? $configVal() : $configVal)) && (is_callable($configVal = $this->manager->getConfig('delete_enabled')) ? $configVal() : $configVal)) {
             Translation::where('group', $group)->where('key', $key)->delete();
             return ['status' => 'ok'];
         }
@@ -113,7 +113,7 @@ class Controller extends BaseController
 
     public function postImport(Request $request)
     {
-        if ($this->manager->getConfig('import_enabled')) {
+        if (is_callable($configVal = $this->manager->getConfig('import_enabled')) ? $configVal() : $configVal) {
             $replace = $request->get('replace', false);
             $counter = $this->manager->importTranslations($replace);
 
