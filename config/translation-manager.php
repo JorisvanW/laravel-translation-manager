@@ -90,7 +90,7 @@ return [
      */
     'services'          => [
         'deepl' => [
-            'enabled'       => false,
+            'enabled'        => false,
             'default_locale' => null, // The local to be preselected to use as base translation
         ],
     ],
