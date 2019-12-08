@@ -47,7 +47,7 @@ class Controller extends BaseController
             ->with('numChanged', $numChanged)
             ->with('numTranslations', $numTranslations)
             ->with('config', $this->manager->getConfig())
-            ->with('editUrl', action('\Barryvdh\TranslationManager\Controller@postEdit', [$group]))
+            ->with('editUrl', $group === null ? '' : action('\Barryvdh\TranslationManager\Controller@postEdit', [$group]))
             ->with('deleteEnabled', (is_callable($configVal = $this->manager->getConfig('delete_enabled')) ? $configVal() : $configVal));
     }
 
