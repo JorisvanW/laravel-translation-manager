@@ -19,9 +19,9 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "illuminate/support": "5.0 - 5.8 | ^6.0",
-        "illuminate/translation": "5.0 - 5.8 | ^6.0",
-        "symfony/finder": "~2.3|~3.0|~4.0"
+        "illuminate/support": "5.0 - 5.8 | ^6.0 | ^7.0",
+        "illuminate/translation": "5.0 - 5.8 | ^6.0 | ^7.0",
+        "symfony/finder": "~2.3|~3.0|~4.0|~5.0"
     },
     "suggest": {
         "jorisvanw/deepl-laravel": "Use DeepL Connect (OAuth) to authenticate via Laravel Socialite with the Mollie API. This is needed for some endpoints."
