@@ -22,7 +22,7 @@ class Translation extends Model
     const STATUS_CHANGED = 1;
 
     protected $table   = 'ltm_translations';
-    protected $guarded = ['id', 'created_at', 'updated_at'];
+    protected $fillable = ['key', 'group', 'locale'];
 
     public function __construct(array $attributes = [])
     {
