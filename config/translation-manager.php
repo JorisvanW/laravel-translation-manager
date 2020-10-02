@@ -10,7 +10,7 @@ return [
     | The default group settings for the elFinder routes.
     |
     */
-    'route'             => [
+    'route'               => [
         'prefix'     => 'translations',
         'middleware' => 'auth',
     ],
@@ -20,35 +20,42 @@ return [
      *
      * @type boolean|callable
      */
-    'delete_enabled'    => true,
+    'delete_enabled'      => true,
 
     /**
      * Enable creating of translations
      *
      * @type boolean|callable
      */
-    'creating_enabled'  => true,
+    'creating_enabled'    => true,
 
     /**
      * Enable import of translations
      *
      * @type boolean|callable
      */
-    'import_enabled'    => true,
+    'import_enabled'      => true,
 
     /**
      * Enable find of translations
      *
      * @type boolean|callable
      */
-    'find_enabled'      => true,
+    'find_enabled'        => true,
 
     /**
      * Enable publish of translations
      *
      * @type boolean|callable
      */
-    'publish_enabled'    => true,
+    'publish_enabled'     => true,
+
+    /**
+     * If the translations wirte to file function need to be skipped (serverless applicatios)
+     *
+     * @type boolean|callable
+     */
+    'skip_export_to_file' => false,
 
     /**
      * Exclude specific groups from Laravel Translation Manager.
@@ -62,40 +69,40 @@ return [
      *        'validation',
      *    )
      */
-    'exclude_groups'    => [],
+    'exclude_groups'      => [],
 
     /**
      * Export translations with keys output alphabetically.
      */
-    'sort_keys '        => false,
+    'sort_keys '          => false,
 
     /**
      * The database connection to use.
      *
      * @type string|null
      */
-    'db_connection'     => null,
+    'db_connection'       => null,
 
     /**
      * Set the position of the menu in a translations group
      *
      * @type string    top|bottom
      */
-    'menu_position'     => 'top',
+    'menu_position'       => 'top',
 
     /**
      * Support Grammarly (maks
      *
      * @type bool
      */
-    'support_grammarly' => false,
+    'support_grammarly'   => false,
 
     /**
      * Enable services of translations
      *
      * @type array
      */
-    'services'          => [
+    'services'            => [
         'deepl' => [
             'enabled'        => false,
             'default_locale' => null, // The local to be preselected to use as base translation
