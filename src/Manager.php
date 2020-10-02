@@ -148,16 +148,19 @@ class Manager{
             if($group == '*')
                 return $this->exportAllTranslations();
 
-            $tree = $this->makeTree(Translation::ofTranslatedGroup($group)->orderByGroupKeys(array_get($this->config, 'sort_keys', false))->get());
+            if (!(is_callable($configVal = $this->getConfig('skip_export_to_file')) ? $configVal() : $configVal)) {
+                $tree = $this->makeTree(Translation::ofTranslatedGroup($group)->orderByGroupKeys(array_get($this->config, 'sort_keys', false))->get());
 
-            foreach($tree as $locale => $groups){
-                if(isset($groups[$group])){
-                    $translations = $groups[$group];
-                    $path = $this->app['path.lang'].'/'.$locale.'/'.$group.'.php';
-                    $output = "<?php\n\nreturn ".var_export($translations, true).";\n";
-                    $this->files->put($path, $output);
+                foreach ($tree as $locale => $groups) {
+                    if (isset($groups[$group])) {
+                        $translations = $groups[$group];
+                        $path         = $this->app['path.lang'] . '/' . $locale . '/' . $group . '.php';
+                        $output       = "<?php\n\nreturn " . var_export($translations, true) . ";\n";
+                        $this->files->put($path, $output);
+                    }
                 }
             }
+
             Translation::ofTranslatedGroup($group)->update(array('status' => Translation::STATUS_SAVED));
 
             $this->events->dispatch(new Events\Published($group));
