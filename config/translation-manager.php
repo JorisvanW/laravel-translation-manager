@@ -44,6 +44,13 @@ return [
     'find_enabled'      => true,
 
     /**
+     * Enable publish of translations
+     *
+     * @type boolean|callable
+     */
+    'publish_enabled'    => true,
+
+    /**
      * Exclude specific groups from Laravel Translation Manager.
      * This is useful if, for example, you want to avoid editing the official Laravel language files.
      *
