@@ -5,6 +5,7 @@ use Illuminate\Events\Dispatcher;
 use Barryvdh\TranslationManager\Models\Translation;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Lang;
 use Symfony\Component\Finder\Finder;
 
 class Manager{
@@ -58,7 +59,7 @@ class Manager{
                         $group = $subLangPath . "/" . $group;
                     }
 
-                    $translations = \Lang::getLoader()->load($locale, $group);
+                    $translations = Lang::getLoader()->load($locale, $group);
                     if ($translations && is_array($translations)) {
                         foreach (array_dot($translations) as $key => $value) {
                             // process only string values

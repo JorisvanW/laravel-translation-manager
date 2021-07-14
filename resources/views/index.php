@@ -242,9 +242,9 @@
     <div class="alert alert-success success-bulk" style="display:none;">
         <p>Done translating the selecterd rows from '<strong class="locale_base">N</strong>' to '<strong class="locale_target">N</strong>'!</p>
     </div>
-    <?php if (Session::has('successPublish')) : ?>
+    <?php if (Illuminate\Support\Facades\Session::has('successPublish')) : ?>
         <div class="alert alert-info">
-            <?php echo Session::get('successPublish'); ?>
+            <?php echo Illuminate\Support\Facades\Session::get('successPublish'); ?>
         </div>
     <?php endif; ?>
     <p>
