@@ -1,11 +1,11 @@
-<?php namespace Barryvdh\TranslationManager\Models;
+<?php
+
+namespace Barryvdh\TranslationManager\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Translation model
- *
  * @property integer        $id
  * @property integer        $status
  * @property string         $locale
@@ -17,11 +17,10 @@ use Illuminate\Support\Facades\DB;
  */
 class Translation extends Model
 {
+    public const STATUS_SAVED   = 0;
+    public const STATUS_CHANGED = 1;
 
-    const STATUS_SAVED   = 0;
-    const STATUS_CHANGED = 1;
-
-    protected $table   = 'ltm_translations';
+    protected $table    = 'ltm_translations';
     protected $fillable = ['key', 'group', 'locale'];
 
     public function __construct(array $attributes = [])
@@ -52,18 +51,10 @@ class Translation extends Model
 
     public function scopeSelectDistinctGroup($query)
     {
-        $select = '';
-
-        switch (DB::getDriverName()) {
-            case 'mysql':
-                $select = 'DISTINCT `group`';
-                break;
-            default:
-                $select = 'DISTINCT "group"';
-                break;
-        }
+        $select = DB::getDriverName() === 'mysql'
+            ? 'DISTINCT `group`'
+            : 'DISTINCT "group"';
 
         return $query->select(DB::raw($select));
     }
-
 }
