@@ -1,40 +1,42 @@
-<?php namespace Barryvdh\TranslationManager;
+<?php
+
+namespace Barryvdh\TranslationManager;
 
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Events\Dispatcher;
 use Barryvdh\TranslationManager\Models\Translation;
 use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Lang;
 use Symfony\Component\Finder\Finder;
 
-class Manager{
-
-    /** @var \Illuminate\Foundation\Application  */
+class Manager
+{
+    /** @var \Illuminate\Foundation\Application */
     protected $app;
-    /** @var \Illuminate\Filesystem\Filesystem  */
+    /** @var \Illuminate\Filesystem\Filesystem */
     protected $files;
-    /** @var \Illuminate\Events\Dispatcher  */
+    /** @var \Illuminate\Events\Dispatcher */
     protected $events;
 
     protected $config;
 
     public function __construct(Application $app, Filesystem $files, Dispatcher $events)
     {
-        $this->app = $app;
-        $this->files = $files;
+        $this->app    = $app;
+        $this->files  = $files;
         $this->events = $events;
         $this->config = $app['config']['translation-manager'];
     }
 
     public function missingKey($namespace, $group, $key)
     {
-        if(!in_array($group, (is_callable($configVal = $this->config['exclude_groups']) ? $configVal() : $configVal)) && (is_callable($configVal = $this->getConfig('creating_enabled')) ? $configVal() : $configVal)) {
-            Translation::firstOrCreate(array(
+        if (!in_array($group, (is_callable($configVal = $this->config['exclude_groups']) ? $configVal() : $configVal)) && (is_callable($configVal = $this->getConfig('creating_enabled')) ? $configVal() : $configVal)) {
+            Translation::firstOrCreate([
                 'locale' => $this->app['config']['app.locale'],
-                'group' => $group,
-                'key' => $key,
-            ));
+                'group'  => $group,
+                'key'    => $key,
+            ]);
         }
     }
 
@@ -61,7 +63,7 @@ class Manager{
 
                     $translations = Lang::getLoader()->load($locale, $group);
                     if ($translations && is_array($translations)) {
-                        foreach (array_dot($translations) as $key => $value) {
+                        foreach (Arr::dot($translations) as $key => $value) {
                             // process only string values
                             if (is_array($value)) {
                                 continue;
@@ -134,7 +136,7 @@ class Manager{
             // Add the translations to the database, if not existing.
             foreach ($keys as $key) {
                 // Split the group and item
-                list($group, $item) = explode('.', $key, 2);
+                [$group, $item] = explode('.', $key, 2);
                 $this->missingKey('', $group, $item);
             }
 
@@ -145,12 +147,15 @@ class Manager{
 
     public function exportTranslations($group)
     {
-        if(!in_array($group, is_callable($configVal = $this->config['exclude_groups']) ? $configVal() : $configVal)) {
-            if($group == '*')
-                return $this->exportAllTranslations();
+        if (!in_array($group, is_callable($configVal = $this->config['exclude_groups']) ? $configVal() : $configVal)) {
+            if ($group === '*') {
+                $this->exportAllTranslations();
+
+                return;
+            }
 
             if (!(is_callable($configVal = $this->getConfig('skip_export_to_file')) ? $configVal() : $configVal)) {
-                $tree = $this->makeTree(Translation::ofTranslatedGroup($group)->orderByGroupKeys(array_get($this->config, 'sort_keys', false))->get());
+                $tree = $this->makeTree(Translation::ofTranslatedGroup($group)->orderByGroupKeys(Arr::get($this->config, 'sort_keys', false))->get());
 
                 foreach ($tree as $locale => $groups) {
                     if (isset($groups[$group])) {
@@ -162,7 +167,7 @@ class Manager{
                 }
             }
 
-            Translation::ofTranslatedGroup($group)->update(array('status' => Translation::STATUS_SAVED));
+            Translation::ofTranslatedGroup($group)->update(['status' => Translation::STATUS_SAVED]);
 
             $this->events->dispatch(new Events\Published($group));
         }
@@ -172,7 +177,7 @@ class Manager{
     {
         $groups = Translation::whereNotNull('value')->selectDistinctGroup()->get('group');
 
-        foreach($groups as $group){
+        foreach ($groups as $group) {
             $this->exportTranslations($group->group);
         }
     }
@@ -189,21 +194,22 @@ class Manager{
 
     protected function makeTree($translations)
     {
-        $array = array();
-        foreach($translations as $translation){
-            array_set($array[$translation->locale][$translation->group], $translation->key, $translation->value);
+        $array = [];
+
+        foreach ($translations as $translation) {
+            Arr::set($array[$translation->locale][$translation->group], $translation->key, $translation->value);
         }
+
         return $array;
     }
 
     public function getConfig($key = null)
     {
-        if($key == null) {
+        if ($key === null) {
             return $this->config;
         }
-        else {
-            return $this->config[$key];
-        }
+
+        return $this->config[$key];
     }
 
 }

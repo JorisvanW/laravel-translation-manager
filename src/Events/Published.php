@@ -9,18 +9,11 @@ class Published
     use SerializesModels;
 
     /**
-     * The published group.
-     *
-     * @var string|null
+     * The group of translations that was published.
      */
-    public $group;
+    public ?string $group;
 
-    /**
-     * Create a new event instance.
-     *
-     * @param string|null $group
-     */
-    public function __construct($group = null)
+    public function __construct(?string $group = null)
     {
         $this->group = $group;
     }

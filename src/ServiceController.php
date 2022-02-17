@@ -1,15 +1,16 @@
-<?php namespace Barryvdh\TranslationManager;
+<?php
+
+namespace Barryvdh\TranslationManager;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
+use Illuminate\Support\Arr;
 use JorisvanW\DeepL\Laravel\Facades\DeepL;
 use Illuminate\Routing\Controller as BaseController;
 use Barryvdh\TranslationManager\Models\Translation;
 
 class ServiceController extends BaseController
 {
-    /** @var \Barryvdh\TranslationManager\Manager */
-    protected $manager;
+    protected Manager $manager;
 
     public function __construct(Manager $manager)
     {
@@ -25,7 +26,7 @@ class ServiceController extends BaseController
             $localeBase   = request()->get('locale_base');
             $localeTarget = request()->get('locale_target');
 
-            if (array_get($services, 'deepl.enabled', false) && $localeBase !== $localeTarget) {
+            if (Arr::get($services, 'deepl.enabled', false) && $localeBase !== $localeTarget) {
                 $translations = Translation::query()->OfTranslatedGroup($group)->locale($localeBase)->whereIn('key', $keys)->where('value', '!=', '');
 
                 $counter              = 0;
@@ -63,7 +64,7 @@ class ServiceController extends BaseController
     {
         $services = $this->manager->getConfig('services');
 
-        if (array_get($services, 'deepl.enabled', false)) {
+        if (Arr::get($services, 'deepl.enabled', false)) {
             $usage = DeepL::api()->usage()->get();
 
             return [

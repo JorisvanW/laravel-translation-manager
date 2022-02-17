@@ -3,17 +3,11 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTranslationsTable extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-        Schema::create('ltm_translations', function(Blueprint $table)
-        {
+class CreateTranslationsTable extends Migration
+{
+    public function up(): void
+    {
+        Schema::create('ltm_translations', static function (Blueprint $table) {
             $table->increments('id');
             $table->integer('status')->default(0);
             $table->string('locale');
@@ -22,16 +16,10 @@ class CreateTranslationsTable extends Migration {
             $table->text('value')->nullable();
             $table->timestamps();
         });
-	}
+    }
 
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
+    public function down(): void
+    {
         Schema::drop('ltm_translations');
-	}
-
+    }
 }

@@ -33,7 +33,7 @@
             -o-transition: all 0.1s;
             transition: all 0.1s;
 
-        <?php if (array_get($config, 'menu_position') === 'bottom') {
+        <?php if (Illuminate\Support\Arr::get($config, 'menu_position') === 'bottom') {
             echo 'bottom: 0;box-shadow: 0 -1px 0 rgba(0,0,0,.23);';
         } else {
             echo 'top: 0;box-shadow: 0 1px 0 rgba(0,0,0,.23);';
@@ -45,7 +45,7 @@
             background: #fff;
         }
 
-        <?php if (array_get($config, 'menu_position') === 'bottom') {
+        <?php if (Illuminate\Support\Arr::get($config, 'menu_position') === 'bottom') {
             echo '.table {margin-bottom: 80px; }';
         } ?>
 
@@ -65,14 +65,14 @@
             border-color: #f00;
         }
 
-        <?php if (array_get($config, 'support_grammarly', false)) { ?>
+        <?php if (Illuminate\Support\Arr::get($config, 'support_grammarly', false)) { ?>
         @media (min-width: 768px) {
             .form-inline .form-control {
                 min-width: 302px;
             }
         }
         <?php } ?>
-        <?php if(array_get($config, 'services.deepl.enabled', false)): ?>
+        <?php if(Illuminate\Support\Arr::get($config, 'services.deepl.enabled', false)): ?>
         .trans-actions.top-flow a[href] {
             float: right;
             margin-right: 5px;
@@ -129,7 +129,7 @@
             $.ajaxSetup({
                 beforeSend: function (xhr, settings) {
                     console.log('beforesend');
-                    settings.data += "&_token=<?= csrf_token() ?>";
+                    settings.data += "&_token=<?= Illuminate\Support\Facades\Session::token(); ?>";
                 }
             });
 
@@ -149,9 +149,9 @@
             $('.group-select').on('change', function () {
                 var group = $(this).val();
                 if (group) {
-                    window.location.href = '<?= action('\Barryvdh\TranslationManager\Controller@getView') ?>/' + $(this).val();
+                    window.location.href = '<?= Illuminate\Support\Facades\URL::action('\Barryvdh\TranslationManager\Controller@getView') ?>/' + $(this).val();
                 } else {
-                    window.location.href = '<?= action('\Barryvdh\TranslationManager\Controller@getIndex') ?>';
+                    window.location.href = '<?= Illuminate\Support\Facades\URL::action('\Barryvdh\TranslationManager\Controller@getIndex') ?>';
                 }
             });
 
@@ -170,14 +170,14 @@
                 }
             });
 
-            <?php if(is_callable($configVal = array_get($config, 'import_enabled', true)) ? $configVal() : $configVal): ?>
+            <?php if(is_callable($configVal = Illuminate\Support\Arr::get($config, 'import_enabled', true)) ? $configVal() : $configVal): ?>
             $('.form-import').on('ajax:success', function (e, data) {
                 $('div.success-import strong.counter').text(data.counter);
                 $('div.success-import').slideDown();
             });
             <?php endif; ?>
 
-            <?php if(is_callable($configVal = array_get($config, 'find_enabled', true)) ? $configVal() : $configVal): ?>
+            <?php if(is_callable($configVal = Illuminate\Support\Arr::get($config, 'find_enabled', true)) ? $configVal() : $configVal): ?>
             $('.form-find').on('ajax:success', function (e, data) {
                 $('div.success-find strong.counter').text(data.counter);
                 $('div.success-find').slideDown();
@@ -188,7 +188,7 @@
                 $('div.success-publish').slideDown();
             });
 
-            <?php if(array_get($config, 'services.deepl.enabled', false)): ?>
+            <?php if(Illuminate\Support\Arr::get($config, 'services.deepl.enabled', false)): ?>
             $('.bulk, [name="check_all"]').change(function () {
                 if (this.name === 'check_all') {
                     $('.bulk').prop('checked', $(this).is(':checked'));
@@ -248,18 +248,18 @@
         </div>
     <?php endif; ?>
     <p>
-        <?php if (!isset($group) && (is_callable($configVal = array_get($config, 'import_enabled', true)) ? $configVal() : $configVal)) : ?>
-    <form class="form-inline form-import" method="POST" action="<?= action('\Barryvdh\TranslationManager\Controller@postImport') ?>" data-remote="true" role="form">
-        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+        <?php if (!isset($group) && (is_callable($configVal = Illuminate\Support\Arr::get($config, 'import_enabled', true)) ? $configVal() : $configVal)) : ?>
+    <form class="form-inline form-import" method="POST" action="<?= Illuminate\Support\Facades\URL::action('\Barryvdh\TranslationManager\Controller@postImport') ?>" data-remote="true" role="form">
+        <input type="hidden" name="_token" value="<?php echo Illuminate\Support\Facades\Session::token(); ?>">
         <select name="replace" class="form-control">
             <option value="0">Append new translations</option>
             <option value="1">Replace existing translations</option>
         </select>
         <button type="submit" class="btn btn-success" data-disable-with="Loading..">Import groups</button>
     </form>
-<?php if (is_callable($configVal = array_get($config, 'find_enabled', true)) ? $configVal() : $configVal): ?>
-    <form class="form-inline form-find" method="POST" action="<?= action('\Barryvdh\TranslationManager\Controller@postFind') ?>" data-remote="true" role="form" data-confirm="Are you sure you want to scan you app folder? All found translation keys will be added to the database.">
-        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+<?php if (is_callable($configVal = Illuminate\Support\Arr::get($config, 'find_enabled', true)) ? $configVal() : $configVal): ?>
+    <form class="form-inline form-find" method="POST" action="<?= Illuminate\Support\Facades\URL::action('\Barryvdh\TranslationManager\Controller@postFind') ?>" data-remote="true" role="form" data-confirm="Are you sure you want to scan you app folder? All found translation keys will be added to the database.">
+        <input type="hidden" name="_token" value="<?php echo Illuminate\Support\Facades\Session::token(); ?>">
         <p></p>
         <button type="submit" class="btn btn-info" data-disable-with="Searching..">Find translations in files</button>
     </form>
@@ -267,11 +267,11 @@
 <?php endif; ?>
     <?php if (isset($group)) : ?>
         <div class="trans-actions">
-            <?php if (is_callable($configVal = array_get($config, 'publish_enabled', true)) ? $configVal() : $configVal): ?>
-            <form class="form-inline form-publish" method="POST" action="<?= action('\Barryvdh\TranslationManager\Controller@postPublish', $group) ?>" data-remote="true" role="form" data-confirm="Are you sure you want to publish the translations group '<?= $group ?>? This will overwrite existing language files.">
-                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+            <?php if (is_callable($configVal = Illuminate\Support\Arr::get($config, 'publish_enabled', true)) ? $configVal() : $configVal): ?>
+            <form class="form-inline form-publish" method="POST" action="<?= Illuminate\Support\Facades\URL::action('\Barryvdh\TranslationManager\Controller@postPublish', $group) ?>" data-remote="true" role="form" data-confirm="Are you sure you want to publish the translations group '<?= $group ?>? This will overwrite existing language files.">
+                <input type="hidden" name="_token" value="<?php echo Illuminate\Support\Facades\Session::token(); ?>">
                 <button type="submit" class="btn btn-info" data-disable-with="Publishing..">Publish translations</button>
-                <a href="<?= action('\Barryvdh\TranslationManager\Controller@getIndex') ?>" class="btn btn-default">Back</a>
+                <a href="<?= Illuminate\Support\Facades\URL::action('\Barryvdh\TranslationManager\Controller@getIndex') ?>" class="btn btn-default">Back</a>
             </form>
             <?php endif; ?>
 
@@ -280,7 +280,7 @@
     <?php endif; ?>
     </p>
     <form role="form">
-        <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+        <input type="hidden" name="_token" value="<?php echo Illuminate\Support\Facades\Session::token(); ?>">
         <div class="form-group">
             <select name="group" id="group" class="form-control group-select">
                 <?php foreach ($groups as $key => $value): ?>
@@ -290,9 +290,9 @@
         </div>
     </form>
     <?php if ($group): ?>
-        <?php if (is_callable($configVal = array_get($config, 'creating_enabled', true)) ? $configVal() : $configVal): ?>
-            <form action="<?= action('\Barryvdh\TranslationManager\Controller@postAdd', [$group]) ?>" method="POST" role="form" id="new-translation">
-                <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+        <?php if (is_callable($configVal = Illuminate\Support\Arr::get($config, 'creating_enabled', true)) ? $configVal() : $configVal): ?>
+            <form action="<?= Illuminate\Support\Facades\URL::action('\Barryvdh\TranslationManager\Controller@postAdd', [$group]) ?>" method="POST" role="form" id="new-translation">
+                <input type="hidden" name="_token" value="<?php echo Illuminate\Support\Facades\Session::token(); ?>">
                 <textarea class="form-control" rows="3" name="keys" placeholder="Add 1 key per line, without the group prefix"></textarea>
                 <p></p>
                 <input type="submit" value="Add keys" class="btn btn-primary">
@@ -300,29 +300,29 @@
         <?php endif ?>
         <hr>
         <h4>Total: <?= $numTranslations ?>, changed: <?= $numChanged ?></h4>
-        <?php if (array_get($config, 'services.deepl.enabled', false)): ?>
+        <?php if (Illuminate\Support\Arr::get($config, 'services.deepl.enabled', false)): ?>
             <div class="bulk-container">
-                <form class="form-inline form-bulk" method="POST" action="<?= action('\Barryvdh\TranslationManager\ServiceController@postBulk', $group) ?>" data-remote="true" role="form">
-                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                <form class="form-inline form-bulk" method="POST" action="<?= Illuminate\Support\Facades\URL::action('\Barryvdh\TranslationManager\ServiceController@postBulk', $group) ?>" data-remote="true" role="form">
+                    <input type="hidden" name="_token" value="<?php echo Illuminate\Support\Facades\Session::token(); ?>">
                     <input type="hidden" name="keys" value="">
                     <img src="https://www.deepl.com/img/press/logo_DeepL.svg" alt="DeepL" width="70px"/> Translate from
 
                     <select name="locale_base" class="form-control">
                         <?php foreach ($locales as $locale): ?>
-                            <option value="<?= $locale; ?>" <?= array_get($config, 'services.deepl.default_locale') === $locale ? 'selected' : ''; ?>><?= $locale; ?></option>
+                            <option value="<?= $locale; ?>" <?= Illuminate\Support\Arr::get($config, 'services.deepl.default_locale') === $locale ? 'selected' : ''; ?>><?= $locale; ?></option>
                         <?php endforeach; ?>
                     </select> to
                     <select name="locale_target" class="form-control">
                         <?php foreach ($locales as $locale): ?>
-                            <option value="<?= $locale; ?>" <?= array_get($config, 'services.deepl.default_locale') !== $locale ? 'selected' : ''; ?>><?= $locale; ?></option>
+                            <option value="<?= $locale; ?>" <?= Illuminate\Support\Arr::get($config, 'services.deepl.default_locale') !== $locale ? 'selected' : ''; ?>><?= $locale; ?></option>
                         <?php endforeach; ?>
                     </select>
 
                     <button type="submit" class="btn btn-primary btn-bulk" data-disable-with="Loading...">Start</button>
                 </form>
 
-                <form class="form-inline form-usage" method="POST" action="<?= action('\Barryvdh\TranslationManager\ServiceController@postUsage') ?>" data-remote="true" role="form">
-                    <input type="hidden" name="_token" value="<?php echo csrf_token(); ?>">
+                <form class="form-inline form-usage" method="POST" action="<?= Illuminate\Support\Facades\URL::action('\Barryvdh\TranslationManager\ServiceController@postUsage') ?>" data-remote="true" role="form">
+                    <input type="hidden" name="_token" value="<?php echo Illuminate\Support\Facades\Session::token(); ?>">
                     <button type="submit" class="btn btn-default btn-usage" data-disable-with="Loading...">Usage</button>
                 </form> <span id="service-usage"></span>
             </div>
@@ -330,7 +330,7 @@
         <table class="table">
             <thead>
             <tr>
-                <?php if (array_get($config, 'services.deepl.enabled', false)): ?>
+                <?php if (Illuminate\Support\Arr::get($config, 'services.deepl.enabled', false)): ?>
                     <th width="10px"><input type="checkbox" name="check_all"></th>
                 <?php endif ?>
                 <th width="15%">Key</th>
@@ -346,7 +346,7 @@
 
             <?php foreach ($translations as $key => $translation): ?>
                 <tr id="<?= $key ?>">
-                    <?php if (array_get($config, 'services.deepl.enabled', false)) { ?>
+                    <?php if (Illuminate\Support\Arr::get($config, 'services.deepl.enabled', false)) { ?>
                         <td><input type="checkbox" name="bulk[]" value="<?= $key ?>" id="bulk_<?= $key; ?>" class="bulk"/></td>
                     <td><label for="bulk_<?= $key; ?>"><?= $key ?></label></td>
                     <?php } else { ?>
@@ -361,7 +361,7 @@
                     <?php endforeach; ?>
                     <?php if ($deleteEnabled): ?>
                         <td>
-                            <a href="<?= action('\Barryvdh\TranslationManager\Controller@postDelete', [$group, $key]) ?>" class="delete-key" data-confirm-msg="Are you sure you want to delete the translations for '<?= $key ?>?"><span class="glyphicon glyphicon-trash"></span></a>
+                            <a href="<?= Illuminate\Support\Facades\URL::action('\Barryvdh\TranslationManager\Controller@postDelete', [$group, $key]) ?>" class="delete-key" data-confirm-msg="Are you sure you want to delete the translations for '<?= $key ?>?"><span class="glyphicon glyphicon-trash"></span></a>
                         </td>
                     <?php endif; ?>
                 </tr>
